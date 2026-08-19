@@ -1,4 +1,5 @@
 # Virtuālā vide
+.venv/
 venv/
 ENV/
 env/
@@ -12,4 +13,5 @@ __pycache__/
 # IDE un redaktoru uzstādījumi
 .vscode/
 .idea/
-*.swpS
+*.swp
+*.swo
