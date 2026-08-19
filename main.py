@@ -17,7 +17,7 @@ class MainWindow(QMainWindow):
         self.resize(500, 300)
 
         # Centrālais logrīks - Pagaidu marķieris pirmajam prototipam
-        label = QLabel("Tas tika izdarīts")
+        label = QLabel("Tas ir izdarīts!")
         
         # Pievieno marķieri kā galveno loga satura elementu
         self.setCentralWidget(label)
