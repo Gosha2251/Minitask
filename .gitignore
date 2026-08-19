@@ -1,0 +1,15 @@
+# Virtuālā vide
+venv/
+ENV/
+env/
+
+# Python baitsa kods un kešatmiņa
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE un redaktoru uzstādījumi
+.vscode/
+.idea/
+*.swpS
