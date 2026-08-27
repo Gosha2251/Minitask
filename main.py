@@ -1,38 +1,61 @@
 import sys
-from PySide6.QtWidgets import QApplication, QLabel, QMainWindow
+from PySide6.QtWidgets import (
+    QApplication,
+    QWidget,
+    QLineEdit,
+    QPushButton,
+    QListWidget,
+    QHBoxLayout,
+    QVBoxLayout
+)
 
-# ==============================================================================
-# GALVENĀ LOGA KLASE (MAIN WINDOW CLASS)
-# ==============================================================================
-class MainWindow(QMainWindow):
-    """
-    Galvenā lietotnes grafiskās saskarnes klase.
-    Manto no PySide6.QtWidgets.QMainWindow.
-    """
+class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
 
-        # Loga virsraksta un izmēru konfigurācija
         self.setWindowTitle("MiniTask")
-        self.resize(500, 300)
+        self.resize(500, 400)
 
-        # Centrālais logrīks - Pagaidu marķieris pirmajam prototipam
-        label = QLabel("Tas ir izdarīts!")
-        
-        # Pievieno marķieri kā galveno loga satura elementu
-        self.setCentralWidget(label)
+        # Ievades lauks
+        self.task_input = QLineEdit()
+        self.task_input.setPlaceholderText("Ievadi jaunu uzdevumu...")
+
+        # Poga
+        self.add_button = QPushButton("Pievienot")
+
+        # Uzdevumu saraksts
+        self.task_list = QListWidget()
+
+        # Izkārtojums: ievades lauks + poga
+        input_layout = QHBoxLayout()
+        input_layout.addWidget(self.task_input)
+        input_layout.addWidget(self.add_button)
+
+        # Galvenais izkārtojums
+        main_layout = QVBoxLayout()
+        main_layout.addLayout(input_layout)
+        main_layout.addWidget(self.task_list)
+
+        self.setLayout(main_layout)
+
+        # Savienojam pogu ar metodi
+        self.add_button.clicked.connect(self.add_task)
+
+    def add_task(self):
+        task_text = self.task_input.text().strip()
+
+        # Tukšas ievades pārbaude
+        if not task_text:
+            return
+
+        # Pievienojam sarakstam
+        self.task_list.addItem(task_text)
+
+        # Attīrām ievades lauku
+        self.task_input.clear()
 
 
-# ==============================================================================
-# PROGRAMMAS GALVENĀ PALAIŠANAS SADAĻA (ENTRY POINT)
-# ==============================================================================
-if __name__ == "__main__":
-    # Izveido aplikācijas objektu un nodod sistēmas argumentus
-    app = QApplication(sys.argv)
-
-    # Inicializē un parāda galveno logu
-    window = MainWindow()
-    window.show()
-
-    # Palaiž Qt notikumu ciklu (event loop) un nodrošina korektu iziešanu
-    sys.exit(app.exec())
+app = QApplication(sys.argv)
+window = MainWindow()
+window.show()
+sys.exit(app.exec())
