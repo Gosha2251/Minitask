@@ -2,12 +2,13 @@ import json
 import sys
 from PySide6.QtWidgets import (
     QApplication,
+    QInputDialog,
     QWidget,
     QLineEdit,
     QPushButton,
     QListWidget,
     QHBoxLayout,
-    QVBoxLayout
+    QVBoxLayout,
 )
 
 class MainWindow(QWidget):
@@ -40,14 +41,22 @@ class MainWindow(QWidget):
         main_layout = QVBoxLayout()
         main_layout.addLayout(input_layout)
         main_layout.addWidget(self.task_list)
+        
         self.complete_button = QPushButton("Pabeigt uzdevumu")
         main_layout.addWidget(self.complete_button)
+        
+        self.edit_button = QPushButton("Rediģēt uzdevumu")
+        self.delete_button = QPushButton("Dzēst uzdevumu")
+        main_layout.addWidget(self.edit_button)
+        main_layout.addWidget(self.delete_button)
 
         self.setLayout(main_layout)
 
         # Savienojam pogu ar metodi
         self.add_button.clicked.connect(self.add_task)
         self.complete_button.clicked.connect(self.complete_task)
+        self.edit_button.clicked.connect(self.edit_task)
+        self.delete_button.clicked.connect(self.delete_task)
 
         # Atjaunojam UI no datiem
         self.update_ui()
@@ -86,6 +95,34 @@ class MainWindow(QWidget):
         self.save_tasks()
         self.update_ui()
 
+    def edit_task(self):
+        row = self.task_list.currentRow()
+        if row == -1:
+            return
+
+        current_text = self.tasks[row]["text"]
+
+        new_text, ok = QInputDialog.getText(
+            self,
+            "Rediģēt uzdevumu",
+            "Uzdevuma teksts:",
+            text=current_text
+        )
+
+        if ok and new_text.strip():
+            self.tasks[row]["text"] = new_text.strip()
+            self.save_tasks()
+            self.update_ui()
+
+
+    def delete_task(self):
+        row = self.task_list.currentRow()
+        if row == -1:
+            return
+
+        self.tasks.pop(row)
+        self.save_tasks()
+        self.update_ui()
     
     def update_ui(self):
         self.task_list.clear()
