@@ -3,6 +3,7 @@ import sys
 from PySide6.QtWidgets import (
     QApplication,
     QInputDialog,
+    QMessageBox,
     QWidget,
     QLineEdit,
     QPushButton,
@@ -20,7 +21,9 @@ class MainWindow(QWidget):
         self.resize(500, 400)
 
         # Galvenā datu struktūra
-        self.tasks = self.load_tasks()
+        self.tasks = []          # <- sākotnējā vērtība
+        self.load_tasks()
+
         
         # Ievades lauks
         self.task_input = QLineEdit()
@@ -142,9 +145,21 @@ class MainWindow(QWidget):
     def load_tasks(self):
         try:
             with open("tasks.json", "r", encoding="utf-8") as file:
-                return json.load(file)
+                self.tasks = json.load(file)
         except FileNotFoundError:
-            return []
+            self.tasks = []
+
+        except json.JSONDecodeError:
+            self.tasks = []
+            self.show_corrupted_data_warning()
+
+    def show_corrupted_data_warning(self):
+        QMessageBox.warning(
+            self,
+        "Datu ielādes kļūda",
+        "Neizdevās nolasīt saglabātos uzdevumus, jo datu fails ir bojāts.\n"
+        "Lietotne turpinās darbu ar tukšu uzdevumu sarakstu."
+        )
 
 
 
