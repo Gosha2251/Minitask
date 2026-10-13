@@ -38,9 +38,10 @@ Lietotnē iespējams:
 - apstiprināt uzdevuma pabeigšanu ar pogu un apskatīt statusu;
 - rediģēt izvēlētā uzdevuma tekstu;
 - dzēst izvēlēto uzdevumu.
+- Kļūdu apstrāde
 
 **Pašreizējā versijā:**  
-Lietotājs var izvēlēties uzdevumu no saraksta un ar pogu **Pabeigt uzdevumu**,  mainīt statusu uz `[x]`, kā arī rediģēt uzdevuma tekstu vai pilnībā izdzēst uzdevumu.
+MiniTask tagad spēj droši startēties arī situācijās, kad datu fails `tasks.json` nav derīgs vai neeksistē. Datu ielādes loģika ir papildināta ar paredzamu kļūdu apstrādi, kas nodrošina, ka lietotne neavārijas un lietotājs tiek informēts par problēmu.
 
 ---
 
@@ -115,6 +116,44 @@ Ja nekas nav izvēlēts:
 - neizmaina datus.
 
 Pēc programmas restartēšanas dzēstais uzdevums neatgriežas.
+
+---
+
+### Kļūdu apstrāde
+
+#### Neeksistējošs datu fails
+Ja `tasks.json` neeksistē (piemēram, programmas pirmajā palaišanas reizē), MiniTask:
+- neavārijas,
+- izveido tukšu uzdevumu sarakstu (`self.tasks = []`),
+- turpina darbu normāli.
+
+Šī situācija tiek uzskatīta par normālu un lietotājam netiek rādīts brīdinājums.
+
+#### Bojāts vai tukšs JSON fails
+Ja `tasks.json` eksistē, bet tā saturs nav derīgs JSON (bojāts fails, nepilnīgs fails, tukšs fails), MiniTask:
+- neavārijas,
+- izveido tukšu uzdevumu sarakstu,
+- parāda lietotājam brīdinājumu ar `QMessageBox.warning`.
+
+**Brīdinājuma teksts:**
+*Neizdevās nolasīt saglabātos uzdevumus, jo datu fails ir bojāts.
+Lietotne turpinās darbu ar tukšu uzdevumu sarakstu.*
+
+#### Apstrādātie izņēmumi
+Datu ielādes laikā tiek apstrādāti divi paredzami izņēmumi:
+
+- `FileNotFoundError` — datu fails neeksistē;
+- `json.JSONDecodeError` — datu fails satur nederīgu JSON.
+
+Abos gadījumos tiek nodrošināts drošs sākuma stāvoklis (`self.tasks = []`), lai pārējā programma varētu turpināt darbu bez kļūdām.
+
+#### Drošs sākuma stāvoklis
+Kļūmes gadījumā `self.tasks` vienmēr tiek iestatīts kā tukšs saraksts. Tas nodrošina, ka:
+- saskarne var droši iterēt pa uzdevumiem,
+- CRUD funkcijas turpina strādāt,
+- programma neavārijas un saglabā paredzamu uzvedību.
+
+MiniTask tagad ir ne tikai strādājoša, bet arī uzticama lietotne, kas korekti reaģē uz datu ielādes problēmām.
 
 ---
 
