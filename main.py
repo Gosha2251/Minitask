@@ -10,6 +10,7 @@ from PySide6.QtWidgets import (
     QListWidget,
     QHBoxLayout,
     QVBoxLayout,
+    QComboBox
 )
 
 class MainWindow(QWidget):
@@ -28,6 +29,19 @@ class MainWindow(QWidget):
         # Ievades lauks
         self.task_input = QLineEdit()
         self.task_input.setPlaceholderText("Ievadi jaunu uzdevumu...")
+        
+        # Prioritātes izvēlne
+        self.priority_combo = QComboBox()
+
+        self.priority_combo.addItems([
+            "Zema",
+            "Normāla",
+            "Augsta"
+        ])
+
+        self.priority_combo.setCurrentText(
+            "Normāla"
+        )
 
         # Poga
         self.add_button = QPushButton("Pievienot")
@@ -38,6 +52,7 @@ class MainWindow(QWidget):
         # Izkārtojums: ievades lauks + poga
         input_layout = QHBoxLayout()
         input_layout.addWidget(self.task_input)
+        input_layout.addWidget(self.priority_combo)
         input_layout.addWidget(self.add_button)
 
         # Galvenais izkārtojums
@@ -73,7 +88,8 @@ class MainWindow(QWidget):
 
         task = {
         "text": task_text,
-        "done": False
+        "done": False,
+        "priority": self.priority_combo.currentText()
         }
         
         # 1. Pievienojam datiem
@@ -87,6 +103,11 @@ class MainWindow(QWidget):
 
         # 4. Attīrām ievades lauku
         self.task_input.clear()
+        
+        # 5. Atjaunojam prioritātes izvēlni uz noklusējuma vērtību
+        self.priority_combo.setCurrentText(
+            "Normāla"
+        )
     
     def complete_task(self):
         row = self.task_list.currentRow()
