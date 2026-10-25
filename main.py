@@ -157,7 +157,13 @@ class MainWindow(QWidget):
             else:
                 prefix = "[ ] "
 
-            self.task_list.addItem(prefix + task["text"])
+            display_text = (
+                prefix +
+                "[" + task["priority"] + "] " +
+                task["text"]
+            )
+
+            self.task_list.addItem(display_text)
 
     def save_tasks(self):
         with open("tasks.json", "w", encoding="utf-8") as file:
