@@ -22,6 +22,9 @@ MiniTask ir vienkārša darbvirsmas lietotne personīgo uzdevumu pārvaldībai u
 - [x] Uzdevumu dzēšana
 - [x] Datu saglabāšana JSON failā
 - [x] Datu ielāde no JSON faila
+- [x] Uzdevumu prioritātes
+- [x] Prioritāšu rediģēšana
+- [x] Veco datu savietojamība
 
 ---
 
@@ -39,9 +42,11 @@ Lietotnē iespējams:
 - rediģēt izvēlētā uzdevuma tekstu;
 - dzēst izvēlēto uzdevumu.
 - Kļūdu apstrāde
-
-**Pašreizējā versijā:**  
-MiniTask tagad spēj droši startēties arī situācijās, kad datu fails `tasks.json` nav derīgs vai neeksistē. Datu ielādes loģika ir papildināta ar paredzamu kļūdu apstrādi, kas nodrošina, ka lietotne neavārijas un lietotājs tiek informēts par problēmu.
+- izvēlēties uzdevuma prioritāti (Zema, Normāla, Augsta);
+- apskatīt prioritāti uzdevumu sarakstā;
+- rediģēt uzdevuma prioritāti;
+- automātiski piešķirt prioritāti "Normāla" vecajiem datiem;
+- ielādēt arī vecā formāta tasks.json failus;
 
 ---
 
@@ -95,6 +100,45 @@ Tiek nodrošināta validācija:
 - tukšs teksts netiek saglabāts;
 - Cancel nemaina datus;
 - ja nekas nav izvēlēts, programma neizmaina citus uzdevumus.
+
+---
+
+### Uzdevumu prioritātes
+
+MiniTask tagad atbalsta uzdevumu prioritātes.
+
+Katram uzdevumam tiek glabāti šādi dati:
+
+- `text` — uzdevuma teksts;
+- `done` — izpildes statuss;
+- `priority` — prioritāte.
+
+Lietotājs var izvēlēties vienu no trim prioritātēm:
+
+- Zema
+- Normāla
+- Augsta
+
+Noklusējuma prioritāte ir **Normāla**.
+
+Prioritāte tiek:
+
+- saglabāta `tasks.json`;
+- parādīta uzdevumu sarakstā;
+- atjaunota pēc programmas restartēšanas;
+- mainīta uzdevuma rediģēšanas laikā.
+
+---
+
+### Veco datu savietojamība
+
+Vecākas MiniTask versijas nesaglabāja lauku `priority`.
+
+Ielādējot vecos datus, programma automātiski piešķir:
+
+```text
+priority = "Normāla"
+```
 
 ---
 
