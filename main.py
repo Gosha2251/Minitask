@@ -43,9 +43,21 @@ class MainWindow(QWidget):
             "Normāla"
         )
 
+        # Meklēšana
+        self.search_input = QLineEdit()
+        
+        self.search_input.setPlaceholderText(
+            "Meklēt uzdevumu..."
+                )
+                
+        
         # Poga
         self.add_button = QPushButton("Pievienot")
 
+        # Meklēšanas lauks
+        search_layout = QHBoxLayout()
+        search_layout.addWidget(self.search_input)
+        
         # Uzdevumu saraksts
         self.task_list = QListWidget()
 
@@ -58,6 +70,7 @@ class MainWindow(QWidget):
         # Galvenais izkārtojums
         main_layout = QVBoxLayout()
         main_layout.addLayout(input_layout)
+        main_layout.addLayout(search_layout)
         main_layout.addWidget(self.task_list)
         
         self.complete_button = QPushButton("Pabeigt uzdevumu")
@@ -108,7 +121,7 @@ class MainWindow(QWidget):
         self.priority_combo.setCurrentText(
             "Normāla"
         )
-    
+
     # Pabeidz uzdevumu
     def complete_task(self):
         row = self.task_list.currentRow()
