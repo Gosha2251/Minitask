@@ -25,6 +25,7 @@ MiniTask ir vienkārša darbvirsmas lietotne personīgo uzdevumu pārvaldībai u
 - [x] Uzdevumu prioritātes
 - [x] Prioritāšu rediģēšana
 - [x] Veco datu savietojamība
+- [X] Meklēšana, filtrēšana, kārtošana
 
 ---
 
@@ -47,6 +48,7 @@ Lietotnē iespējams:
 - rediģēt uzdevuma prioritāti;
 - automātiski piešķirt prioritāti "Normāla" vecajiem datiem;
 - ielādēt arī vecā formāta tasks.json failus;
+- uzdevumus var meklēt un filtrēt sarakstā.
 
 ---
 
@@ -211,6 +213,51 @@ MiniTask tagad demonstrē pilnu CRUD datu pārvaldības ciklu:
 - **Delete** — uzdevuma dzēšana.
 
 Visas izmaiņas tiek veiktas datu modelī `self.tasks`, un tikai pēc tam saskarne tiek atjaunota.
+
+---
+
+#### Meklēšana, filtrēšana un kārtošana
+
+MiniTask atbalsta uzdevumu meklēšanu, filtrēšanu un kārtošanu.
+
+##### Meklēšana
+
+Lietotājs var ievadīt tekstu meklēšanas laukā.
+
+Meklēšana:
+
+- notiek pēc uzdevuma teksta;
+- nav atkarīga no lielo un mazo burtu lietojuma;
+- darbojas arī pēc daļējas teksta sakritības.
+
+Ja meklēšanas lauks ir tukšs, tiek attēloti visi uzdevumi, kas atbilst izvēlētajam filtram.
+
+##### Filtrēšana
+
+Lietotājs var filtrēt uzdevumus pēc prioritātes:
+
+- Visas
+- Zema
+- Normāla
+- Augsta
+
+Ja izvēlēta vērtība **Visas**, prioritāte neierobežo redzamos rezultātus.
+
+Meklēšana un filtrēšana var tikt izmantotas vienlaicīgi.
+
+##### Kārtošana
+
+Pēc meklēšanas un filtrēšanas atlasītie uzdevumi tiek sakārtoti alfabētiskā secībā pēc uzdevuma teksta.
+
+Kārtošana tiek veikta tikai lietotāja saskarnē attēlotajam rezultātam.
+
+Avota dati (`self.tasks`) netiek pārkārtoti vai modificēti.
+
+##### Filtrētā skata apstrāde
+
+Rediģēšana, dzēšana un statusa maiņa darbojas korekti arī filtrētā vai sakārtotā skatā.
+
+Šim nolūkam tiek izmantots `visible_task_indices`, kas nodrošina saikni starp lietotājam redzamo rindu un atbilstošo ierakstu avota datos (`self.tasks`).
 
 ---
 
